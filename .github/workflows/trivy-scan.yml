@@ -44,10 +44,25 @@ jobs:
         run: |
           TIMESTAMP_UTC=$(date -u +"%d %b %Y %I:%M:%S %p UTC")
           TIMESTAMP_SGT=$(TZ=Asia/Singapore date +"%d %b %Y %I:%M:%S %p SGT")
-      
+
+          # Print entire SARIF file in a compact view (avoid huge output)
+          echo "=== SARIF HEAD ==="
+          jq '. | {runs: .runs | map({results: .results | map({ruleId, message, level, rule})})}' trivy-results.sarif
+
+          # Print first vulnerability entry
+          echo "=== FIRST VULNERABILITY ==="
+          jq '.runs[].results[0]' trivy-results.sarif
+
+          # Print all severities inside SARIF
+          echo "=== SEVERITIES DETECTED IN SARIF ==="
+          jq '[.runs[].results[].rule.properties.severity]' trivy-results.sarif | sort | uniq -c
+
           CRITICAL=$(jq '[.runs[].results[] | select(.rule.properties.severity == "CRITICAL")] | length' trivy-results.sarif)
           HIGH=$(jq '[.runs[].results[] | select(.rule.properties.severity == "HIGH")] | length' trivy-results.sarif)
-      
+
+          echo "CRITICAL COUNT: $CRITICAL"
+          echo "HIGH COUNT: $HIGH"
+
           echo "Debug: First vulnerability entry:"
           jq '.runs[].results[0]' trivy-results.sarif
       
