@@ -47,8 +47,9 @@ jobs:
 
           TEMP=$(jq '
             .runs[0] as $run |
+            ($run.tool.driver.rules // []) as $rules |
             $run.results[] as $result |
-            ($run.tool.driver.rules[] | select(.id == $result.ruleId)) as $rule |
+            ($rules[] | select(.id == $result.ruleId)) as $rule |
             {
               ruleId: $result.ruleId,
               file: ($result.locations[0].physicalLocation.artifactLocation.uri // "N/A"),
