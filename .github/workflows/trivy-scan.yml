@@ -51,12 +51,11 @@ jobs:
             ($run.tool.driver.rules[] | select(.id == $result.ruleId)) as $rule |
             {
               ruleId: $result.ruleId,
-              file: $result.locations[0].physicalLocation.artifactLocation.uri,
-              severity: ($rule.properties.tags | map(select(test("LOW|MEDIUM|HIGH|CRITICAL"))) | .[0]),
-              message: $result.message.text
+              file: ($result.locations[0].physicalLocation.artifactLocation.uri // "N/A"),
+              severity: ($rule.properties.tags // [] | map(select(test("LOW|MEDIUM|HIGH|CRITICAL"))) | .[0] // "UNSPECIFIED"),
+              message: ($result.message.text // "No message")
             }
           ' trivy-results.sarif)
-          echo "Temp: ${TEMP}"
 
           # Extract vulnerability counts
           #CRITICAL=$(jq '[.Results[].Vulnerabilities? // [] | .[] | select(.Severity=="CRITICAL")] | length' trivy-results.sarif)
