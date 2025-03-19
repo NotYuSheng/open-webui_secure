@@ -26,25 +26,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Trivy CLI globally
-        uses: aquasecurity/setup-trivy@v0.60.0
-        with:
-          version: v0.60.1
-          cache: true
-
       - name: Log in to GitHub Container Registry (GHCR)
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Run Trivy vulnerability scanner (JSON)
+      - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
         with:
           image-ref: 'ghcr.io/notyusheng/open-webui_secure:latest'
           format: 'json'
-          output: 'trivy-results.json'
+          output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
-      
-      - name: Convert JSON report to SARIF
-        run: trivy convert --format sarif --input trivy-results.json --output trivy-results.sarif
 
       - name: Extract scan results
         run: |
@@ -54,9 +45,22 @@ jobs:
           # Convert to Singapore Time (SGT, UTC+8) in the same format
           TIMESTAMP_SGT=$(TZ=Asia/Singapore date +"%d %b %Y %I:%M:%S %p SGT")
 
+          TEMP=$(jq '
+            .runs[0] as $run |
+            $run.results[] as $result |
+            ($run.tool.driver.rules[] | select(.id == $result.ruleId)) as $rule |
+            {
+              ruleId: $result.ruleId,
+              file: $result.locations[0].physicalLocation.artifactLocation.uri,
+              severity: ($rule.properties.tags | map(select(test("LOW|MEDIUM|HIGH|CRITICAL"))) | .[0]),
+              message: $result.message.text
+            }
+          ' trivy-results.sarif)
+          echo "Temp: ${TEMP}"
+
           # Extract vulnerability counts
-          CRITICAL=$(jq '[.Results[].Vulnerabilities? // [] | .[] | select(.Severity=="CRITICAL")] | length' trivy-results.json)
-          HIGH=$(jq '[.Results[].Vulnerabilities? // [] | .[] | select(.Severity=="HIGH")] | length' trivy-results.json)
+          #CRITICAL=$(jq '[.Results[].Vulnerabilities? // [] | .[] | select(.Severity=="CRITICAL")] | length' trivy-results.sarif)
+          #HIGH=$(jq '[.Results[].Vulnerabilities? // [] | .[] | select(.Severity=="HIGH")] | length' trivy-results.sarif)
 
           # Store environment variables
           echo "LAST_SCAN_UTC=${TIMESTAMP_UTC}" >> $GITHUB_ENV
