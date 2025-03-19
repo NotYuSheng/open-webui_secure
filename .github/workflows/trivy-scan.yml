@@ -29,49 +29,30 @@ jobs:
       - name: Log in to GitHub Container Registry (GHCR)
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Run Trivy vulnerability scanner
+      - name: Run Trivy vulnerability scanner (JSON)
         uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
         with:
           image-ref: 'ghcr.io/notyusheng/open-webui_secure:latest'
-          format: 'sarif'
-          output: 'trivy-results.sarif'
+          format: 'json'
+          output: 'trivy-results.json'
           severity: 'CRITICAL,HIGH'
+      
+      - name: Convert JSON report to SARIF
+        run: trivy convert --format sarif --input trivy-results.json --output trivy-results.sarif
 
-      - name: Debug Print SARIF output
-        run: cat trivy-results.sarif
-
-      - name: Extract and debug scan results
+      - name: Extract scan results
         run: |
+          # Get timestamps in UTC with Day Month Year format
           TIMESTAMP_UTC=$(date -u +"%d %b %Y %I:%M:%S %p UTC")
+
+          # Convert to Singapore Time (SGT, UTC+8) in the same format
           TIMESTAMP_SGT=$(TZ=Asia/Singapore date +"%d %b %Y %I:%M:%S %p SGT")
 
-          # Print entire SARIF file in a compact view (avoid huge output)
-          echo "=== SARIF HEAD ==="
-          jq '. | {runs: .runs | map({results: .results | map({ruleId, message, level, rule})})}' trivy-results.sarif
+          # Extract vulnerability counts
+          CRITICAL=$(jq '[.Results[].Vulnerabilities? // [] | .[] | select(.Severity=="CRITICAL")] | length' trivy-results.json)
+          HIGH=$(jq '[.Results[].Vulnerabilities? // [] | .[] | select(.Severity=="HIGH")] | length' trivy-results.json)
 
-          # Print first vulnerability entry
-          echo "=== FIRST VULNERABILITY ==="
-          jq '.runs[].results[0]' trivy-results.sarif
-
-          # Print all severities inside SARIF
-          echo "=== SEVERITIES DETECTED IN SARIF ==="
-          jq '[.runs[].results[].rule.properties.severity]' trivy-results.sarif | sort | uniq -c
-
-          CRITICAL=$(jq '[.runs[].results[] | select(.rule.properties.severity == "CRITICAL")] | length' trivy-results.sarif)
-          HIGH=$(jq '[.runs[].results[] | select(.rule.properties.severity == "HIGH")] | length' trivy-results.sarif)
-
-          echo "CRITICAL COUNT: $CRITICAL"
-          echo "HIGH COUNT: $HIGH"
-
-          echo "Debug: First vulnerability entry:"
-          jq '.runs[].results[0]' trivy-results.sarif
-      
-          echo "Debug: All HIGH vulnerabilities:"
-          jq '.runs[].results[] | select(.rule.properties.severity == "HIGH")' trivy-results.sarif
-      
-          echo "Debug: All CRITICAL vulnerabilities:"
-          jq '.runs[].results[] | select(.rule.properties.severity == "CRITICAL")' trivy-results.sarif
-      
+          # Store environment variables
           echo "LAST_SCAN_UTC=${TIMESTAMP_UTC}" >> $GITHUB_ENV
           echo "LAST_SCAN_SGT=${TIMESTAMP_SGT}" >> $GITHUB_ENV
           echo "CRITICAL_COUNT=${CRITICAL}" >> $GITHUB_ENV
