@@ -37,6 +37,61 @@ jobs:
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
 
+      - name: Debug Print SARIF output
+        run: cat trivy-results.sarif
+
+      - name: Extract and debug scan results
+        run: |
+          TIMESTAMP_UTC=$(date -u +"%d %b %Y %I:%M:%S %p UTC")
+          TIMESTAMP_SGT=$(TZ=Asia/Singapore date +"%d %b %Y %I:%M:%S %p SGT")
+      
+          CRITICAL=$(jq '[.runs[].results[] | select(.rule.properties.severity == "CRITICAL")] | length' trivy-results.sarif)
+          HIGH=$(jq '[.runs[].results[] | select(.rule.properties.severity == "HIGH")] | length' trivy-results.sarif)
+      
+          echo "Debug: First vulnerability entry:"
+          jq '.runs[].results[0]' trivy-results.sarif
+      
+          echo "Debug: All HIGH vulnerabilities:"
+          jq '.runs[].results[] | select(.rule.properties.severity == "HIGH")' trivy-results.sarif
+      
+          echo "Debug: All CRITICAL vulnerabilities:"
+          jq '.runs[].results[] | select(.rule.properties.severity == "CRITICAL")' trivy-results.sarif
+      
+          echo "LAST_SCAN_UTC=${TIMESTAMP_UTC}" >> $GITHUB_ENV
+          echo "LAST_SCAN_SGT=${TIMESTAMP_SGT}" >> $GITHUB_ENV
+          echo "CRITICAL_COUNT=${CRITICAL}" >> $GITHUB_ENV
+          echo "HIGH_COUNT=${HIGH}" >> $GITHUB_ENV
+
+      - name: Update README with scan results
+        run: |
+          # Define the placeholders
+          START_PLACEHOLDER="<!-- TRIVY_SCAN_RESULTS -->"
+          END_PLACEHOLDER="<!-- TRIVY_SCAN_END -->"
+  
+          # Generate the new scan results content
+          SCAN_RESULTS="$START_PLACEHOLDER\n"
+          SCAN_RESULTS+="## Latest Security Scan Results\n\n"
+          SCAN_RESULTS+="🕒 **Last Scan (UTC):** $LAST_SCAN_UTC  \n"
+          SCAN_RESULTS+="🕒 **Last Scan (SGT):** $LAST_SCAN_SGT  \n"
+          SCAN_RESULTS+="🚨 **Critical Vulnerabilities:** $CRITICAL_COUNT  \n"
+          SCAN_RESULTS+="⚠️ **High Vulnerabilities:** $HIGH_COUNT  \n"
+          SCAN_RESULTS+="$END_PLACEHOLDER"
+  
+          # Use awk to replace only content between the placeholders
+          awk -v start="$START_PLACEHOLDER" -v end="$END_PLACEHOLDER" -v new_content="$SCAN_RESULTS" '
+            $0 == start {print new_content; inside=1; next}
+            $0 == end {inside=0; next}
+            !inside {print}
+          ' README.md > README.tmp && mv README.tmp README.md
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add README.md
+          git commit -m "Update latest Trivy scan results in README"
+          git push
+
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
         with:
