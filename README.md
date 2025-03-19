@@ -4,7 +4,7 @@
 
 An effort to remove all critical and high CVE vulnerabilities from the popular LLM web interface [open-webui](https://github.com/open-webui/open-webui).
 
-This repository runs a trivy scan workflow everytime it is updated and every midnight UTC. Results of the scan is automatically updated in the [Latest Security Scan Results](#latest-security-scan-results) section.
+This repository runs a trivy scan workflow everytime it is updated and every midnight UTC. Results of the scan is automatically updated in the repo `Security` tab.
 
 ## Base Image:
 `ghcr.io/open-webui/open-webui:git-e6ff416-cuda`  
