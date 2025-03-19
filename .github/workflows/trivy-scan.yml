@@ -49,7 +49,7 @@ jobs:
             .runs[0] as $run |
             ($run.tool.driver.rules // []) as $rules |
             $run.results[] as $result |
-            ($rules[] | select(.id == $result.ruleId)) as $rule |
+            ($rules | map(select(.id == $result.ruleId)) | .[0]) as $rule |
             {
               ruleId: $result.ruleId,
               file: ($result.locations[0].physicalLocation.artifactLocation.uri // "N/A"),
