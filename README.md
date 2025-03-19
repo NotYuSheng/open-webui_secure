@@ -7,6 +7,12 @@ An effort to remove all critical and high CVE vulnerabilities from the popular L
 This repository runs a trivy scan workflow everytime it is updated and every midnight UTC. Results of the scan is automatically updated in the repo `Security` tab.
 
 <!-- TRIVY_SCAN_RESULTS -->
+## Latest Security Scan Results
+
+🕒 **Last Scan (UTC):** 19 Mar 2025 02:49:50 PM UTC  
+🕒 **Last Scan (SGT):** 19 Mar 2025 10:49:50 PM SGT  
+🚨 **Critical Vulnerabilities:** 0  
+⚠️ **High Vulnerabilities:** 0  
 <!-- TRIVY_SCAN_END -->
 
 ## Base Image:
