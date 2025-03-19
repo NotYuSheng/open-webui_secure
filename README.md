@@ -4,7 +4,10 @@
 
 An effort to remove all critical and high CVE vulnerabilities from the popular LLM web interface [open-webui](https://github.com/open-webui/open-webui).
 
-This repository runs a trivy scan workflow everytime it is updated and every midnight UTC. Results of the scan is automatically updated in the repo `Security` tab.
+This repository runs a trivy scan workflow everytime it is updated and every midnight UTC. Results of the scan is automatically updated in the [Latest Security Scan Results](#latest-security-scan-results) section. 
+
+> [!NOTE]
+> GitHub `Security` tab categorizes severity based on SARIF `level` (e.g., `"error"` = High, `"warning"` = Medium), which may differ from Trivy’s native severity field.
 
 <!-- TRIVY_SCAN_RESULTS -->
 ## Latest Security Scan Results
