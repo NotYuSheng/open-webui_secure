@@ -12,7 +12,7 @@ RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get remove --purge -y linux-libc-dev && \
     DEBIAN_FRONTEND=noninteractive apt-get remove --purge --allow-remove-essential -y perl-base && \
     DEBIAN_FRONTEND=noninteractive apt-get remove --purge -y perl-modules-5.36 && \
-    pip uninstall -y Jinja2 && \
+    #pip uninstall -y Jinja2 && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
