@@ -88,9 +88,10 @@ This repository runs a trivy scan workflow everytime it is updated and every mid
 
 ## Core Functionalities Under Active Testing
 The following functionalities will be continuously tested and maintained:
-- Access Control
-  - Admin Login
-  - User Login
+- ~~Access Control~~
+  - ~~Admin Login~~
+  - ~~User Login~~
+- Chat
 - RAG
 - Agentic Tools
 - Native Tool Calling
