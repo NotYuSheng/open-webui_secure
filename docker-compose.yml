@@ -1,0 +1,13 @@
+services:
+  open-webui_secure:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: open-webui_secure
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    environment:
+      - ENV=dev
+      - OPENAI_API_BASE_URL=http://192.168.1.111/vllm_qwen2.5/v1 # Replace this with your own API URL
+      - OPENAI_API_KEY=token-abc123 # vLLM default token
