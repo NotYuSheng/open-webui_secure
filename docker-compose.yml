@@ -1,7 +1,0 @@
-services:
-  open-webui_secure:
-    image: ghcr.io/open-webui/open-webui:git-e6ff416-cuda
-    container_name: open-webui_secure
-    ports:
-      - "8080:8080"
-    restart: unless-stopped
