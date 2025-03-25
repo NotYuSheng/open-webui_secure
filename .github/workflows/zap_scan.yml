@@ -1,0 +1,31 @@
+name: OWASP ZAP Full Scan
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs every night at 00:00 UTC
+
+jobs:
+  zap-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Start Target Container
+        run: |
+          # Run your Docker image
+          docker run -d --name target-app -p 8080:8080 ghcr.io/notyusheng/open-webui_secure:latest
+          # Wait a few seconds to ensure the app is up and running
+          sleep 240
+
+      - name: Run OWASP ZAP Full Scan
+        run: |
+          # Run the OWASP ZAP full scan against the target URL
+          docker run --rm --network host owasp/zap2docker-stable zap-full-scan.py -t http://localhost:8080 -r zap_report.html
+
+      - name: Upload ZAP Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: zap-report
+          path: zap_report.html
+
+      - name: Stop Target Container
+        run: docker stop target-app
