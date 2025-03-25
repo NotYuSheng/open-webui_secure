@@ -1,8 +1,13 @@
 name: OWASP ZAP Full Scan
 
 on:
+  push:
+    branches: [ "main", "zap" ]
+  pull_request:
+    branches: [ "main", "zap" ]
   schedule:
-    - cron: '0 0 * * *'  # Runs every night at 00:00 UTC
+    - cron: '0 0 * * *'  # Runs daily at midnight UTC
+  workflow_dispatch:  # Enables manual triggering
 
 jobs:
   zap-scan:
