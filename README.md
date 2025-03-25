@@ -103,3 +103,4 @@ The following functionalities will be continuously tested and maintained:
 - RAG
 - Agentic Tools
 - Native Tool Calling
+- Arena Mode
