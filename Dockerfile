@@ -8,10 +8,6 @@ RUN apt-get update && \
 # Stage 2: Main Open WebUI hardened container
 FROM ghcr.io/open-webui/open-webui:git-e6ff416-cuda
 
-# Copy extracted libz shared objects from stage 1
-COPY --from=zlib-extract /tmp/libz.so.1 /usr/lib/x86_64-linux-gnu/libz.so.1
-COPY --from=zlib-extract /tmp/libz.so.1.2.13 /usr/lib/x86_64-linux-gnu/libz.so.1.2.13
-
 # Upgrade Jinja2 to patch CVEs
 RUN pip install --no-cache-dir --upgrade "Jinja2>=3.1.6"
 
