@@ -1,10 +1,12 @@
 # Security Policy
 
+Note, a new tag is only created when significant changes are made to the repo. A tag is **NOT** created after every CVE fix. Refer to [packages](https://github.com/NotYuSheng/open-webui_secure/pkgs/container/open-webui_secure) for the latest secured image of `open-webui_secure`.
+
 ## Supported Versions
 
 | Version  | Supported          |
 | -------- | ------------------ |
-| v1.0.2   | :white_check_mark: |
+| v1.0.2   | :x:                |
 | v1.0.1   | :x:                |
 | v1.0.0   | :x:                |
 
