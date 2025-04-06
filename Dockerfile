@@ -11,6 +11,10 @@ FROM ghcr.io/open-webui/open-webui:git-e6ff416-cuda
 # Upgrade Jinja2 to patch CVEs
 RUN pip install --no-cache-dir --upgrade "Jinja2>=3.1.6"
 
+# Upgrade liblzma to fix CVE-2025-31115
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y liblzma5=5.4.1-1
+
 # Remove unnecessary system packages
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get remove --purge -y libexpat1 && \
