@@ -38,7 +38,7 @@ For end users who want to deploy the secure version of the application, we provi
 
    To launch the secure app using Docker Compose, run:
    ```bash
-   docker-compose -f docker-compose.secure.yml up -d
+   docker compose -f docker-compose.secure.yml up -d
    ```
    Alternatively, you can rename the `docker-compose.secure.yml` file to `docker-compose.yml` and run normally:
    ```bash
