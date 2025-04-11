@@ -43,31 +43,26 @@ This repository runs a trivy scan workflow everytime it is updated and every mid
    OPENAI_API_BASE_URL=
    OPENAI_API_KEY=
    ```
-3. **Deploy the Service**
+
+3. **Fix Vulnerabilities**
+
+   Modify the Dockerfile, apply the necessary fixes (for example, by uninstalling or upgrading fixed packages).
+
+4. **Deploy and Test**
 
     Start the service using docker-compose:
    ```bash
    docker-compose up -d
    ```
-4. **Enter the Running Container**
+   Test that core functionalities listed in [Core Functionalities Under Active Testing](#Core-Functionalities-Under-Active-Testing) section work as expected.
 
-   Open a shell session inside the container:
-   ```bash
-   docker exec -it open-webui_secure sh
-   ```
-5. **Fix Vulnerabilities**
-
-   Within the container, apply the necessary fixes (for example, by uninstalling or patching vulnerable components).
-
-   Test that core functionalities such as Access Control, Admin Login, User Login, RAG, Admin Panel, Agentic Tools, and Native Tool Calling work as expected.
-
-6. **Commit Your Changes**
+5. **Commit Your Changes**
 
    Once everything is verified, commit your container’s state with a new tag (replace `vX.X` with your version number):
    ```bash
    docker commit open-webui_secure open-webui_secure:vX.X
    ```
-7. **Scan the Image with Trivy**
+6. **Scan the Image with Trivy**
 
    Before pushing your image, run a vulnerability scan to ensure there are no critical or high CVEs:
    ```bash
@@ -75,14 +70,14 @@ This repository runs a trivy scan workflow everytime it is updated and every mid
    ```
    Review the `trivy-analysis.txt` file and address any issues found. The process should fail or require fixes if critical vulnerabilities remain.
 
-8. **Tag the Image for GHCR**
+7. **Tag the Image for GHCR**
 
    Once your image is secure, tag it with your GitHub Container Registry namespace:
    ```bash
    docker tag open-webui_secure:vX.X ghcr.io/notyusheng/open-webui_secure:vX.X
    docker tag open-webui_secure:vX.X ghcr.io/notyusheng/open-webui_secure:latest
    ```
-9. **Push the Image to GHCR**
+8. **Push the Image to GHCR**
 
    Log in to GHCR using your GitHub username and a Personal Access Token (PAT) with the write:packages scope:
    ```bash
