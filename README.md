@@ -32,7 +32,7 @@ For end users who want to deploy the secure version of the application, we provi
 
 1. **Download the Secure Compose File**:
 
-   Only this file is necessary, all other files in the repository is intended for CVE remediation.
+   Only the `docker-compose.secure.yml` is necessary, all other files in the repository is intended for CVE remediation.
 
 2. **Deploy the Secure App**:
 
