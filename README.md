@@ -53,7 +53,7 @@ This repository runs a trivy scan workflow everytime it is updated and every mid
 
 4. **Deploy and Test**
 
-    Start the service using docker-compose:
+   Start the service using docker-compose:
    ```bash
    docker compose up -d
    ```
