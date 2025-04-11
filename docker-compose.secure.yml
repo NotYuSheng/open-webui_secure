@@ -1,7 +1,7 @@
 services:
   open-webui:
     image: ghcr.io/notyusheng/open-webui_secure:latest
-    container_name: open-webui
+    container_name: open-webui_secure
     volumes:
       - ./data:/app/backend/data
     ports:
