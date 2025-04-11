@@ -71,7 +71,7 @@ This repository runs a trivy scan workflow everytime it is updated and every mid
 
    Before pushing your image, run a vulnerability scan to ensure there are no critical or high CVEs:
    ```bash
-   sudo trivy image --timeout 120m open-webui_secure:vX.X > trivy-analysis.txt
+   sudo trivy image --timeout 120m --severity critical,high open-webui_secure:vX.X > trivy-analysis.txt
    ```
    Review the `trivy-analysis.txt` file and address any issues found. The process should fail or require fixes if critical vulnerabilities remain.
 
