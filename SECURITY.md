@@ -6,9 +6,7 @@ Note, a new tag is only created when significant changes are made to the repo. A
 
 | Version  | Supported          |
 | -------- | ------------------ |
-| v1.0.2   | :x:                |
-| v1.0.1   | :x:                |
-| v1.0.0   | :x:                |
+| vX.X.X   | :x:                |
 
 ## Reporting a Vulnerability
 
