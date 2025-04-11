@@ -1,0 +1,15 @@
+services:
+  open-webui:
+    image: ghcr.io/notyusheng/open-webui_secure:latest
+    container_name: open-webui
+    volumes:
+      - ./data:/app/backend/data
+    ports:
+      - 8080:8080
+      - 1235:1234
+    restart: unless-stopped
+    environment:
+      - ENV=dev
+      - WEBUI_AUTH=False
+      - OPENAI_API_BASE_URL=http://host.docker.internal:1234/v1
+      - OPENAI_API_KEY=lm-studio
