@@ -6,10 +6,8 @@ services:
       - ./data:/app/backend/data
     ports:
       - 8080:8080
-      - 1235:1234
     restart: unless-stopped
     environment:
       - ENV=dev
-      - WEBUI_AUTH=False
-      - OPENAI_API_BASE_URL=http://host.docker.internal:1234/v1
-      - OPENAI_API_KEY=lm-studio
+      - OPENAI_API_BASE_URL=http://host.docker.internal:1234/v1 # Change this to your LLM Server URL (Optional)
+      - OPENAI_API_KEY=lm-studio # Change this to your LLM Server API Key (Optional)
