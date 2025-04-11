@@ -12,8 +12,8 @@ This repository runs a trivy scan workflow everytime it is updated and every mid
 <!-- TRIVY_SCAN_RESULTS -->
 ## Latest Security Scan Results
 
-🕒 **Last Scan (UTC):** 11 Apr 2025 05:23:33 PM UTC  
-🕒 **Last Scan (SGT):** 12 Apr 2025 01:23:33 AM SGT  
+🕒 **Last Scan (UTC):** 11 Apr 2025 05:20:14 PM UTC  
+🕒 **Last Scan (SGT):** 12 Apr 2025 01:20:14 AM SGT  
 🚨 **Critical Vulnerabilities:** 0  
 ⚠️ **High Vulnerabilities:** 0  
 <!-- TRIVY_SCAN_END -->
@@ -27,7 +27,30 @@ This repository runs a trivy scan workflow everytime it is updated and every mid
 - **Docker Compose**
 - **Trivy**
 
-## Setup
+## End-User Deployment
+For end users who want to deploy the secure version of the application, we provide a dedicated Docker Compose file with the necessary configurations named to `docker-compose.secure.yml`.
+
+1. **Download the Secure Compose File**:
+
+   Only this file is necessary, all other files in the repository is intended for CVE remediation
+
+2. **Deploy the Secure App**:
+
+   To launch the secure app using Docker Compose, run:
+   ```bash
+   docker-compose -f docker-compose.secure.yml up -d
+   ```
+   Alternatively, you can rename the `docker-compose.secure.yml` file to `docker-compose.yml` and run normally:
+   ```bash
+   mv docker-compose.secure.yml docker-compose.yml
+   docker compose up -d
+   ```
+
+3. **Verify Deployment**
+
+   Once the containers are running, you can verify that the secure application is up and running by visiting the corresponding ports (e.g., `http://localhost:8080`).
+
+## CVE Remediation Contribution Guide
 
 1. **Fork and Clone the Repository**
 
@@ -57,7 +80,7 @@ This repository runs a trivy scan workflow everytime it is updated and every mid
    ```bash
    docker compose up -d
    ```
-   Test that core functionalities listed in [Core Functionalities Under Active Testing](#Core-Functionalities-Under-Active-Testing) section work as expected.
+   Test that core functionalities listed in [Core Functionalities Under Active Testing](#core-functionalities-under-active-testing) section work as expected.
 
 5. **Commit Your Changes Locally**
 
