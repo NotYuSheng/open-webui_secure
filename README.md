@@ -29,36 +29,39 @@ This repository runs a trivy scan workflow everytime it is updated and every mid
 
 ## Setup
 
-1. **Installation**
+1. **Fork and Clone the Repository**
 
-   Clone the repository and navigate into the project directory:
+   Fork: On GitHub, navigate to `https://github.com/NotYuSheng/open-webui_secure.git` and click the "Fork" button to create a copy under your own account.
+
+   Clone:
    ```bash
-   git clone https://github.com/NotYuSheng/open-webui_secure.git
+   git clone https://github.com/<your-github-username>/open-webui_secure.git
    cd open-webui_secure
    ```
 2. **Environment Setup**
 
-   Add you llm server reference into `docker-compose.yml`. Alternatively, this can be later configured using the GUI.
+   Add you llm server reference into `docker-compose.yml`.
    ```
    OPENAI_API_BASE_URL=
    OPENAI_API_KEY=
    ```
+   This can be later configured using the GUI.
 
 3. **Fix Vulnerabilities**
 
-   Modify the Dockerfile, apply the necessary fixes (for example, by uninstalling or upgrading fixed packages).
+   Modify the `Dockerfile` (or other relevant files) to upgrade or remove vulnerable packages and apply necessary security patches.
 
 4. **Deploy and Test**
 
     Start the service using docker-compose:
    ```bash
-   docker-compose up -d
+   docker compose up -d
    ```
    Test that core functionalities listed in [Core Functionalities Under Active Testing](#Core-Functionalities-Under-Active-Testing) section work as expected.
 
-5. **Commit Your Changes**
+5. **Commit Your Changes Locally**
 
-   Once everything is verified, commit your container’s state with a new tag (replace `vX.X` with your version number):
+   Commit your container’s state with a new tag (replace `vX.X` with your version number):
    ```bash
    docker commit open-webui_secure open-webui_secure:vX.X
    ```
@@ -70,24 +73,14 @@ This repository runs a trivy scan workflow everytime it is updated and every mid
    ```
    Review the `trivy-analysis.txt` file and address any issues found. The process should fail or require fixes if critical vulnerabilities remain.
 
-7. **Tag the Image for GHCR**
+7. **Push Your Changes and Submit a Pull Request**
 
    Once your image is secure, tag it with your GitHub Container Registry namespace:
    ```bash
-   docker tag open-webui_secure:vX.X ghcr.io/notyusheng/open-webui_secure:vX.X
-   docker tag open-webui_secure:vX.X ghcr.io/notyusheng/open-webui_secure:latest
+   git push origin main
    ```
-8. **Push the Image to GHCR**
-
-   Log in to GHCR using your GitHub username and a Personal Access Token (PAT) with the write:packages scope:
-   ```bash
-   docker login ghcr.io -u <your-github-username>
-   ```
-   Then push both tagged images:
-   ```bash
-   docker push ghcr.io/notyusheng/open-webui_secure:vX.X
-   docker push ghcr.io/notyusheng/open-webui_secure:latest
-   ```
+   Open a pull request on GitHub from your forked repository to the original repository (`NotYuSheng/open-webui_secure`), detailing your fixes and improvements.
+   Include the trivy-analysis.txt file as an attachment or add its contents to the PR description.
 
 ## Core Functionalities Under Active Testing
 The following functionalities will be continuously tested and maintained:
