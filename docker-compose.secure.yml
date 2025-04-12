@@ -8,6 +8,5 @@ services:
       - 8080:8080
     restart: unless-stopped
     environment:
-      - ENV=dev
       - OPENAI_API_BASE_URL=http://host.docker.internal:1234/v1 # Change this to your LLM Server URL (Optional)
       - OPENAI_API_KEY=lm-studio # Change this to your LLM Server API Key (Optional)
