@@ -1,0 +1,29 @@
+name: Build and Analyze with SonarQube
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  sonarqube:
+    name: SonarQube Analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # required for accurate blame info
+
+      - name: Set Up SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} # required for self-hosted SonarQube
+
+      - name: Optional - Build/Compile App for Sonar (if needed)
+        run: |
+          docker-compose -f docker-compose.secure.yml build
+          # Or run npm install / pip install etc., if needed for analysis
