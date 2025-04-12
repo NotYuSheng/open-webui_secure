@@ -40,8 +40,14 @@ jobs:
       - name: Move ZAP reports to /reports folder
         run: |
           mkdir -p reports
-          rm -rf reports/*  # Clean old reports
-          cp -r zap_scan/* reports/
+          find reports/ ! -name '.gitkeep' -type f -delete
+          find reports/ ! -name '.gitkeep' -type d -empty -delete
+
+          if [ -d zap_scan ]; then
+            cp -r zap_scan/* reports/
+          else
+            echo "No zap_scan directory found — skipping copy."
+          fi
 
       - name: Commit ZAP report to repo
         run: |
