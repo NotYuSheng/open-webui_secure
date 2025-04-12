@@ -55,6 +55,4 @@ jobs:
           git config --global user.email "github-actions@github.com"
           git add reports/
           git diff --quiet && git diff --staged --quiet || git commit -m "Update ZAP scan report"
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }} HEAD:${{ github.ref_name }}
