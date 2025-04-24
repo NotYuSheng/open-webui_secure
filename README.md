@@ -86,7 +86,7 @@ For end users who want to deploy the secure version of the application, we provi
 
    Commit your container’s state with a new tag (replace `vX.X.X` with your version number):
    ```bash
-   docker commit open-webui_secure open-webui_secure:vX.X
+   docker commit open-webui_secure open-webui_secure:vX.X.X
    ```
 6. **Scan the Image with Trivy**
 
