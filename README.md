@@ -84,7 +84,7 @@ For end users who want to deploy the secure version of the application, we provi
 
 5. **Commit Your Changes Locally**
 
-   Commit your container’s state with a new tag (replace `vX.X` with your version number):
+   Commit your container’s state with a new tag (replace `vX.X.X` with your version number):
    ```bash
    docker commit open-webui_secure open-webui_secure:vX.X
    ```
@@ -92,7 +92,7 @@ For end users who want to deploy the secure version of the application, we provi
 
    Before pushing your image, run a vulnerability scan to ensure there are no critical or high CVEs:
    ```bash
-   sudo trivy image --timeout 120m --severity critical,high open-webui_secure:vX.X > trivy-analysis.txt
+   sudo trivy image --timeout 120m --severity CRITICAL,HIGH open-webui_secure:vX.X.X > trivy-analysis.txt
    ```
    Review the `trivy-analysis.txt` file and address any issues found. The process should fail or require fixes if critical vulnerabilities remain.
 
