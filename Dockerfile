@@ -15,6 +15,13 @@ RUN pip install --no-cache-dir --upgrade "Jinja2>=3.1.6"
 RUN apt-get update && \
     apt-get install --no-install-recommends -y liblzma5=5.4.1-1
 
+# Upgrade liblzma to fix CVE-2025-32434
+RUN pip install --no-cache-dir \
+    torch==2.6.0 \
+    torchvision==0.21.0 \
+    torchaudio==2.6.0 \
+    --index-url https://download.pytorch.org/whl/cu124
+
 # Remove unnecessary system packages
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get remove --purge -y libexpat1 && \
