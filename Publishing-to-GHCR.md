@@ -30,15 +30,15 @@ These can only be done for collaborators with write access to this repository. C
 
 5. **Commit Your Changes Locally**
 
-   Commit your container’s state with a new tag (replace `vX.X` with your version number):
+   Commit your container’s state with a new tag (replace `vX.X.X` with your version number):
    ```bash
-   docker commit open-webui_secure open-webui_secure:vX.X
+   docker commit open-webui_secure open-webui_secure:vX.X.X
    ```
 6. **Scan the Image with Trivy**
 
    Before pushing your image, run a vulnerability scan to ensure there are no critical or high CVEs:
    ```bash
-   sudo trivy image --timeout 120m --severity critical,high open-webui_secure:vX.X > trivy-analysis.txt
+   sudo trivy image --timeout 120m --severity CRITICAL,HIGH open-webui_secure:vX.X.X > trivy-analysis.txt
    ```
    Review the `trivy-analysis.txt` file and address any issues found. The process should fail or require fixes if critical vulnerabilities remain.
 
@@ -46,8 +46,8 @@ These can only be done for collaborators with write access to this repository. C
 
    Once your image is secure, tag it with your GitHub Container Registry namespace:
    ```bash
-   docker tag open-webui_secure:vX.X ghcr.io/notyusheng/open-webui_secure:vX.X
-   docker tag open-webui_secure:vX.X ghcr.io/notyusheng/open-webui_secure:latest
+   docker tag open-webui_secure:vX.X.X ghcr.io/notyusheng/open-webui_secure:vX.X.X
+   docker tag open-webui_secure:vX.X.X ghcr.io/notyusheng/open-webui_secure:latest
    ```
 8. **Push the Image to GHCR**
 
@@ -57,6 +57,6 @@ These can only be done for collaborators with write access to this repository. C
    ```
    Then push both tagged images:
    ```bash
-   docker push ghcr.io/notyusheng/open-webui_secure:vX.X
+   docker push ghcr.io/notyusheng/open-webui_secure:vX.X.X
    docker push ghcr.io/notyusheng/open-webui_secure:latest
    ```
