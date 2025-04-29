@@ -38,7 +38,7 @@ These can only be done for collaborators with write access to this repository. C
 
    Before pushing your image, run a vulnerability scan to ensure there are no critical or high CVEs:
    ```bash
-   sudo trivy image --timeout 120m --severity CRITICAL,HIGH open-webui_secure:vX.X.X > trivy-analysis.txt
+   sudo trivy image --timeout 120m --severity CRITICAL,HIGH --format json open-webui_secure:vX.X.X > trivy-analysis.json
    ```
    Review the `trivy-analysis.txt` file and address any issues found. The process should fail or require fixes if critical vulnerabilities remain.
 
