@@ -12,8 +12,8 @@ This repository runs a trivy scan workflow everytime it is updated and every mid
 <!-- TRIVY_SCAN_RESULTS -->
 ## Latest Security Scan Results
 
-🕒 **Last Scan (UTC):** 12 Jun 2025 12:45:35 AM UTC  
-🕒 **Last Scan (SGT):** 12 Jun 2025 08:45:35 AM SGT  
+🕒 **Last Scan (UTC):** 13 Jun 2025 12:45:48 AM UTC  
+🕒 **Last Scan (SGT):** 13 Jun 2025 08:45:48 AM SGT  
 🚨 **Critical Vulnerabilities:** 0  
 ⚠️ **High Vulnerabilities:** 3  
 <!-- TRIVY_SCAN_END -->
